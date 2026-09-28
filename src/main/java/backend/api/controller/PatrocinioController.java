@@ -3,9 +3,11 @@ package backend.api.controller;
 import backend.api.dto.PatrocinioRequest;
 import backend.api.model.Patrocinio;
 import backend.api.service.PatrocinioService;
-import org.springframework.http.HttpStatus;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/patrocinio")
@@ -18,8 +20,9 @@ public class PatrocinioController {
     }
 
     @PostMapping
-    public ResponseEntity<Patrocinio> criarPatrocinio(
-            @RequestBody PatrocinioRequest request) {
+    public ResponseEntity<Patrocinio> criar(
+            @RequestBody PatrocinioRequest request
+    ) {
 
         Patrocinio patrocinio = new Patrocinio();
 
@@ -31,11 +34,29 @@ public class PatrocinioController {
         patrocinio.setMensagem(request.getMensagem());
         patrocinio.setTermos(request.getTermos());
 
-        Patrocinio patrocinioSalvo =
+        Patrocinio salvo =
                 patrocinioService.salvar(patrocinio);
 
         return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(patrocinioSalvo);
+                .status(201)
+                .body(salvo);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Patrocinio>> listar() {
+
+        return ResponseEntity.ok(
+                patrocinioService.listar()
+        );
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Patrocinio> buscarPorId(
+            @PathVariable Long id
+    ) {
+
+        return patrocinioService.buscarPorId(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 }

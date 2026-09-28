@@ -3,9 +3,11 @@ package backend.api.controller;
 import backend.api.dto.PedidoRequest;
 import backend.api.model.Pedido;
 import backend.api.service.PedidoService;
-import org.springframework.http.HttpStatus;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/pedido")
@@ -18,7 +20,9 @@ public class PedidoController {
     }
 
     @PostMapping
-    public ResponseEntity<Pedido> criarPedido(@RequestBody PedidoRequest request) {
+    public ResponseEntity<Pedido> criar(
+            @RequestBody PedidoRequest request
+    ) {
 
         Pedido pedido = new Pedido();
 
@@ -30,10 +34,28 @@ public class PedidoController {
         pedido.setMao(request.getMao());
         pedido.setMensagem(request.getMensagem());
 
-        Pedido pedidoSalvo = pedidoService.salvar(pedido);
+        Pedido salvo = pedidoService.salvar(pedido);
 
         return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(pedidoSalvo);
+                .status(201)
+                .body(salvo);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Pedido>> listar() {
+
+        return ResponseEntity.ok(
+                pedidoService.listar()
+        );
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Pedido> buscarPorId(
+            @PathVariable Long id
+    ) {
+
+        return pedidoService.buscarPorId(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 }
