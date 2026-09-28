@@ -1,0 +1,29 @@
+### Testar pedido
+
+POST http://localhost:8080/api/pedido
+Content-Type: application/json
+
+{
+  "nome": "João da Silva",
+  "telefone": "(55) 99999-9999",
+  "email": "joao@email.com",
+  "endereco": "Rua Teste, 123, Centro, Santa Maria, RS",
+  "altura": "1.61-1.75",
+  "mao": "direita",
+  "mensagem": "Pedido de teste"
+}
+
+### Testar patrocínio
+
+POST http://localhost:8080/api/patrocinio
+Content-Type: application/json
+
+{
+  "nome": "Maria da Silva",
+  "email": "maria@email.com",
+  "telefone": "(55) 98888-8888",
+  "tipo": "financeiro",
+  "valor": 500.00,
+  "mensagem": "Patrocínio de teste",
+  "termos": true
+}
