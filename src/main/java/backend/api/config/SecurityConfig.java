@@ -1,5 +1,5 @@
 package backend.api.config;
-
+import backend.api.filter.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
